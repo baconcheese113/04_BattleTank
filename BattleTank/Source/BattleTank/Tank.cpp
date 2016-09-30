@@ -24,6 +24,12 @@ void ATank::BeginPlay()
 void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
+	Barrel = BarrelToSet;
+}
+
+void ATank::SetTurretReference(UTankTurret* TurretToSet)
+{
+	TankAimingComponent->SetTurretReference(TurretToSet);
 }
 
 // Called to bind functionality to input
@@ -37,4 +43,14 @@ void ATank::AimAt(FVector HitLocation) {
 	//FRotator Rot = FRotationMatrix::MakeFromY(HitLocation - GetOwner()->GetActorLocation()).Rotator();
 	//SetActorRotation(Rot, ETeleportType::None);
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
+}
+
+void ATank::Fire() {
+	UE_LOG(LogTemp, Warning, TEXT("Firing at %f"), GetWorld()->GetTimeSeconds());
+	bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
+	if (!Barrel || !bIsReloaded) { return; }
+
+	// Spawn a projectile at the socket location on the barrel
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation(FName("Projectile")), Barrel->GetSocketRotation(FName("Projectile")));
+	Projectile->LaunchProjectile(LaunchSpeed);
 }

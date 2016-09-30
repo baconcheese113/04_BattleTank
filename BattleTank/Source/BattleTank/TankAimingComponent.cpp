@@ -10,7 +10,7 @@ UTankAimingComponent::UTankAimingComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
 }
@@ -19,6 +19,10 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	Barrel = BarrelToSet;
+}
+void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
+{
+	Turret = TurretToSet;
 }
 
 // Called when the game starts
@@ -40,7 +44,7 @@ void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, 
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
-	if (!Barrel) { return; }
+	if (!Barrel || !Turret) { return; }
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	FVector TossVelocity;
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
@@ -55,11 +59,11 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
 		ESuggestProjVelocityTraceOption::DoNotTrace,
 		FCollisionResponseParams::DefaultResponseParam,
 		TArray<AActor*>(),
-		true
+		false
 	);
 	if (bHaveAimSolution) {
 		auto AimDirection = TossVelocity.GetSafeNormal();
-		//MoveBarrel();
+		MoveBarrelTowards(AimDirection);
 		//UE_LOG(LogTemp, Warning, TEXT("%s suggested velocity is %s"), *GetOwner()->GetName(), *AimDirection.ToString());
 	}
 	else {
@@ -73,11 +77,11 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
 	// In tick, slowly move to barrelelevation
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
-	float Elevation = AimDirection.Z;
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
-
-	//auto BarrelRotation = Barrel->GetForwardVector().Rotation;
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	//UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *BarrelRotation.ToString());
 
-	Barrel->Elevate(5); // TODO remove magic number
+	Barrel->Elevate(DeltaRotator.Pitch); 
+	Turret->Rotate(DeltaRotator.Yaw);
 }
