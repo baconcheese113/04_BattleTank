@@ -4,6 +4,7 @@
 
 #include "Projectile.h"
 #include "TankAimingComponent.h"
+#include "TankMovementComponent.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
@@ -35,12 +36,15 @@ public:
 	TSubclassOf<AProjectile> ProjectileBlueprint; //Alternative is TSubTypeOf<blah>()
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
-	float ReloadTime = 4.f;
+	double ReloadTime = 4;
 
-	float LastFireTime = -4.f;
+	double LastFireTime = 0;
 
 protected:
 	UTankAimingComponent* TankAimingComponent = nullptr;
+
+	UPROPERTY(BlueprintReadOnly, Category = Setup)
+	UTankMovementComponent* TankMovmentComponent = nullptr;
 
 private:
 	// Sets default values for this pawn's properties
