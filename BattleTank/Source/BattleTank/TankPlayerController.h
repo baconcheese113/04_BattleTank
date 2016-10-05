@@ -26,7 +26,7 @@ public:
 	
 	// Called every frame
 	void Tick(float DeltaSeconds) override;
-
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	ATank* GetControlledTank() const;
 	
 	void BeginPlay() override;

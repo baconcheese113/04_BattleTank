@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Creative Commons
 
 #include "BattleTank.h"
 #include "TankTrack.h"
@@ -29,8 +29,5 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	
 	IntendMoveForward(FVector::DotProduct(TankForward, AIForwardIntention));
 	IntendTurnRight(FVector::CrossProduct(AIForwardIntention, TankForward).Z);
-
-	//UE_LOG(LogTemp, Warning, TEXT("Right: %f, Forward: %f"), FVector::CrossProduct(AIForwardIntention, TankForward).Z, FVector::DotProduct(TankForward, AIForwardIntention));
-
 }
 
