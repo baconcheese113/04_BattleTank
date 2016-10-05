@@ -13,6 +13,8 @@ void ATankAIController::Tick(float DeltaSeconds) {
 	auto ControlledTank = Cast<ATank>(GetPawn());
 
 	if (PlayerTank) {
+
+		MoveToActor(PlayerTank, AcceptanceRadius, false);
 		// Move turret towards player
 		ControlledTank->AimAt(PlayerTank->GetActorLocation());
 		ControlledTank->Fire();

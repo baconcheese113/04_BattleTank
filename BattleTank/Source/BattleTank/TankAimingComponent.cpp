@@ -67,7 +67,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
 		//UE_LOG(LogTemp, Warning, TEXT("%s suggested velocity is %s"), *GetOwner()->GetName(), *AimDirection.ToString());
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("No Solution found"));
+		//UE_LOG(LogTemp, Warning, TEXT("%s: No Solution found"), *GetOwner()->GetName());
 	}
 }
 

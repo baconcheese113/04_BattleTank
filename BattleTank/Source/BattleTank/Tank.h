@@ -41,10 +41,9 @@ public:
 	double LastFireTime = 0;
 
 protected:
-	UTankAimingComponent* TankAimingComponent = nullptr;
 
 	UPROPERTY(BlueprintReadOnly, Category = Setup)
-	UTankMovementComponent* TankMovmentComponent = nullptr;
+	UTankAimingComponent* TankAimingComponent = nullptr;
 
 private:
 	// Sets default values for this pawn's properties

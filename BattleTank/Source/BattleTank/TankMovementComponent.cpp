@@ -1,14 +1,36 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "TankTrack.h"
 #include "TankMovementComponent.h"
 
-UTankMovementComponent::UTankMovementComponent() {
-	PrimaryComponentTick.bCanEverTick = false;
-}
 
+void UTankMovementComponent::Initialize(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet) {
+	LeftTrack = LeftTrackToSet;
+	RightTrack = RightTrackToSet;
+	
+}
 void UTankMovementComponent::IntendMoveForward(float Throw) {
-	UE_LOG(LogTemp, Warning, TEXT("IntendMoveForward: %f"), Throw);
+	if (!ensure(LeftTrack && RightTrack)) { return; }
+	LeftTrack->SetThrottle(Throw);
+	RightTrack->SetThrottle(Throw);
 }
 
+void UTankMovementComponent::IntendTurnRight(float Throw) {
+	if (!ensure(LeftTrack && RightTrack)) { return; }
+	LeftTrack->SetThrottle(Throw);
+	RightTrack->SetThrottle(-Throw);
+}
+
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) {
+	
+	auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
+	
+	IntendMoveForward(FVector::DotProduct(TankForward, AIForwardIntention));
+	IntendTurnRight(FVector::CrossProduct(AIForwardIntention, TankForward).Z);
+
+	//UE_LOG(LogTemp, Warning, TEXT("Right: %f, Forward: %f"), FVector::CrossProduct(AIForwardIntention, TankForward).Z, FVector::DotProduct(TankForward, AIForwardIntention));
+
+}
 
