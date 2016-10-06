@@ -3,44 +3,10 @@
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
 
-
-// Sets default values for this component's properties
-UTankAimingComponent::UTankAimingComponent()
-{
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	bWantsBeginPlay = true;
-	PrimaryComponentTick.bCanEverTick = false;
-
-	// ...
-}
-
-
-void UTankAimingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
+void UTankAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTankTurret * TurretToSet)
 {
 	Barrel = BarrelToSet;
-}
-void UTankAimingComponent::SetTurretReference(UTankTurret * TurretToSet)
-{
 	Turret = TurretToSet;
-}
-
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-	
-}
-
-
-// Called every frame
-void UTankAimingComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
-{
-	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-
-	// ...
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
@@ -64,22 +30,13 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
 	if (bHaveAimSolution) {
 		auto AimDirection = TossVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);
-		//UE_LOG(LogTemp, Warning, TEXT("%s suggested velocity is %s"), *GetOwner()->GetName(), *AimDirection.ToString());
-	}
-	else {
-		//UE_LOG(LogTemp, Warning, TEXT("%s: No Solution found"), *GetOwner()->GetName());
 	}
 }
-
-//MoveBarrel(FVector AimDirection)
-	// if AimDirection is within +-.5, set barrelElevation
-	// In tick, slowly move to barrelelevation
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection) {
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
-	//UE_LOG(LogTemp, Warning, TEXT("AimAsRotator: %s"), *BarrelRotation.ToString());
 
 	Barrel->Elevate(DeltaRotator.Pitch); 
 	Turret->Rotate(DeltaRotator.Yaw);

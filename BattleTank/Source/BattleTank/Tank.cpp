@@ -21,17 +21,6 @@ void ATank::BeginPlay()
 	
 }
 
-void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
-{
-	TankAimingComponent->SetBarrelReference(BarrelToSet);
-	Barrel = BarrelToSet;
-}
-
-void ATank::SetTurretReference(UTankTurret* TurretToSet)
-{
-	TankAimingComponent->SetTurretReference(TurretToSet);
-}
-
 // Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
@@ -40,8 +29,6 @@ void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 }
 
 void ATank::AimAt(FVector HitLocation) {
-	//FRotator Rot = FRotationMatrix::MakeFromY(HitLocation - GetOwner()->GetActorLocation()).Rotator();
-	//SetActorRotation(Rot, ETeleportType::None);
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
