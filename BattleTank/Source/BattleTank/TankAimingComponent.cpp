@@ -9,8 +9,8 @@ void UTankAimingComponent::Initialize(UTankBarrel * BarrelToSet, UTankTurret * T
 	Turret = TurretToSet;
 }
 
-void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
-	if (!Barrel || !Turret) { return; }
+void UTankAimingComponent::AimAt(FVector HitLocation) {
+	if (!ensure(Barrel && Turret)) { return; }
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	FVector TossVelocity;
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
