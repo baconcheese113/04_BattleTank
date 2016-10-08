@@ -20,7 +20,8 @@ private:
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 
-	float AcceptanceRadius = 3000.f; // How close can the tank get
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	float AcceptanceRadius = 8000.f; // How close can the tank get
 
 	
 };
