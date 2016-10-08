@@ -10,8 +10,8 @@ void ATankAIController::BeginPlay() {
 
 void ATankAIController::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
-	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	auto ControlledTank = Cast<ATank>(GetPawn());
+	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
+	auto ControlledTank = GetPawn();
 
 	if (!ensure(PlayerTank && ControlledTank)) { return; }
 
