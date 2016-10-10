@@ -50,20 +50,21 @@ private:
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	TSubclassOf<AProjectile> ProjectileBlueprint; //Alternative is TSubTypeOf<blah>()
+
 	UPROPERTY(EditAnywhere, Category = "Firing")
 	float LaunchSpeed = 4000; //Sensible starting value of 1000 m/s
 
-	double LastFireTime = 0;
-
-	int32 RoundsLeft = 3;
-
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	double ReloadTime = 4;
+	float ReloadTime = 3;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int32 RoundsLeft = 3;
 
 	FVector AimDirection = FVector::ZeroVector;
 
-	UPROPERTY(EditAnywhere, Category = "Setup")
-	TSubclassOf<AProjectile> ProjectileBlueprint; //Alternative is TSubTypeOf<blah>()
+	double LastFireTime = 0;
 
 	void MoveBarrelTowards();
 

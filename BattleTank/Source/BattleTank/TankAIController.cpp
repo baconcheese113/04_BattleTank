@@ -3,6 +3,7 @@
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
 #include "TankAIController.h"
+#include "Tank.h" // To implement OnDeath()
 
 void ATankAIController::BeginPlay() {
 	Super::BeginPlay();
@@ -25,4 +26,13 @@ void ATankAIController::Tick(float DeltaSeconds) {
 		TankAimingComponent->Fire();
 	}
 }
+
+void ATankAIController::SetPawn(APawn * InPawn) {
+	Super::SetPawn(InPawn);
+	if (InPawn) {
+		auto PossessedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossessedTank)) { return; }
+	}
+}
+
 

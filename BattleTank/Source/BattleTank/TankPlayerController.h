@@ -43,4 +43,5 @@ private:
 	bool GetSightRayHitLocation(FVector & HitLocation) const;
 
 	bool GetLookVectorHitLocation(FVector LookDirection, FVector &HitLocation) const;
+
 };

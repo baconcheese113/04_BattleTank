@@ -22,5 +22,6 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	float AcceptanceRadius = 8000.f; // How close can the tank get
 
-	
+	virtual void SetPawn(APawn* InPawn) override;
+
 };

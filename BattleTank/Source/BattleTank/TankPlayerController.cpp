@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "Tank.h"
 #include "TankPlayerController.h"
 
 void ATankPlayerController::Tick(float DeltaTime) {
@@ -14,6 +15,7 @@ void ATankPlayerController::BeginPlay()
 	TankAimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if (!ensure(TankAimingComponent)) { return; }
 	FoundAimingComponent(TankAimingComponent);
+	
 	
 }
 
@@ -60,4 +62,6 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 	return false;
 }
 
+
+// TODO Receive OnDeath.Broadcast() 
 

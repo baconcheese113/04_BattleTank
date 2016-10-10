@@ -73,8 +73,7 @@ void UTankAimingComponent::MoveBarrelTowards() {
 		Turret->Rotate(-DeltaRotator.Yaw); 
 	}
 	
-	Barrel->Elevate(DeltaRotator.Pitch); 
-	Turret->Rotate(DeltaRotator.Yaw);
+	Barrel->Elevate(DeltaRotator.Pitch);
 }
 
 void UTankAimingComponent::Fire() {
