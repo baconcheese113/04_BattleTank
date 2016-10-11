@@ -9,12 +9,16 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
+
+	Smolder = Cast<UParticleSystemComponent>(GetComponentByClass(UParticleSystemComponent::StaticClass())); //Make sure to set this ahead of time in BP
+
 }
 
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+	CurrentHealth = StartingHealth;
 }
 
 float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
@@ -27,6 +31,9 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 	CurrentHealth -= DamageToApply;
 	if (CurrentHealth <= 0) {
 		//UE_LOG(LogTemp, Warning, TEXT("DEAD"));
+		OnDeath.Broadcast();
+		if(ensure(Smolder))
+			Smolder->Activate();
 	}
 	
 	return DamageToApply;
@@ -36,8 +43,3 @@ float ATank::GetHealthPercent() const
 {
 	return (float)CurrentHealth/(float)StartingHealth;
 }
-
-
-// TODO OnDeath.Broadcast()
-
-
