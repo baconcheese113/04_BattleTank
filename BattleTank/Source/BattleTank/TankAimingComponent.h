@@ -9,6 +9,8 @@
 #include "Projectile.h"
 #include "TankAimingComponent.generated.h" // put new includes above
 
+class ATankPlayerController;
+
 UENUM()
 enum class EFiringState : uint8 {
 	Reloading,
@@ -39,6 +41,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 	int32 GetRoundsLeft() const;
+
 protected:
 
 	// Needs to be protected because we're using it in a child blueprint class
@@ -52,6 +55,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	TSubclassOf<AProjectile> ProjectileBlueprint; //Alternative is TSubTypeOf<blah>()
+
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	USoundBase* ReloadSound;
 
 	UPROPERTY(EditAnywhere, Category = "Firing")
 	float LaunchSpeed = 4000; //Sensible starting value of 1000 m/s

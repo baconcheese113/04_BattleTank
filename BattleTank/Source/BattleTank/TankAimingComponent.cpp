@@ -19,6 +19,7 @@ void UTankAimingComponent::BeginPlay() {
 }
 
 void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) {
+	EFiringState PreviousState = FiringState;
 	if (RoundsLeft < 1) {
 		FiringState = EFiringState::OutOfAmmo;
 	}
@@ -30,6 +31,9 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 	}
 	else {
 		FiringState = EFiringState::Locked;
+	}
+	if (PreviousState == EFiringState::Reloading && FiringState != PreviousState) {
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ReloadSound, GetOwner()->GetActorLocation());
 	}
 }
 
