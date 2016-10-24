@@ -34,7 +34,7 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 	int32 CurrentHealth; // Initialized in BeginPlay
 
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	UParticleSystemComponent* Smolder;
 
 	

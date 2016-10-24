@@ -11,7 +11,9 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
 
 	Smolder = Cast<UParticleSystemComponent>(GetComponentByClass(UParticleSystemComponent::StaticClass())); //Make sure to set this ahead of time in BP
-
+	if (Smolder) {
+		UE_LOG(LogTemp, Warning, TEXT("Found Smolder"));
+	}
 }
 
 // Called when the game starts or when spawned
@@ -23,17 +25,18 @@ void ATank::BeginPlay()
 
 float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
 {
-	int32 DamagePoints = FPlatformMath::RoundToInt(DamageAmount);	// Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser));
+	int32 DamagePoints = FPlatformMath::RoundToInt(DamageAmount);	
+	float SuperDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	
-	UE_LOG(LogTemp, Warning, TEXT("Damage:%i Health is:%i, ActualDamage is:%i, Health is:%i"), DamagePoints, CurrentHealth - DamagePoints, DamagePoints, CurrentHealth);
+	UE_LOG(LogTemp, Warning, TEXT("SuperDamage:%f, DamagePoints:%i, CurrentHealth will be:%i, CurrentHealth was:%i"), SuperDamage, DamagePoints, CurrentHealth - DamagePoints, CurrentHealth);
 	int32 DamageToApply = FMath::Clamp(DamagePoints, 0, CurrentHealth);
 	
 	CurrentHealth -= DamageToApply;
 	if (CurrentHealth <= 0) {
 		//UE_LOG(LogTemp, Warning, TEXT("DEAD"));
 		OnDeath.Broadcast();
-		if(ensure(Smolder))
-			Smolder->Activate();
+		//if(ensure(Smolder))
+		//	Smolder->Activate();
 	}
 	
 	return DamageToApply;

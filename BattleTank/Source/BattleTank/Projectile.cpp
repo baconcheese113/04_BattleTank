@@ -13,6 +13,9 @@ AProjectile::AProjectile()
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement"));
 	ProjectileMovementComponent->bAutoActivate = false;
 
+	WhistleAudio = CreateDefaultSubobject<UAudioComponent>(FName("Whistle Audio"));
+	WhistleAudio->bAutoActivate = true;
+
 	CollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Collision Mesh"));
 	SetRootComponent(CollisionMesh);
 	CollisionMesh->SetNotifyRigidBodyCollision(true);
@@ -53,14 +56,16 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 		UDamageType::StaticClass(),
 		TArray<AActor*>() //damage all actors
 	);
-	
+
+	if(ensure(WhistleAudio))
+		WhistleAudio->Stop();
+
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
 	ExplosionForce->FireImpulse();
 
 	SetRootComponent(ImpactBlast);
 	CollisionMesh->DestroyComponent();
-
 	
 
 	FTimerHandle TimerHandle = FTimerHandle();

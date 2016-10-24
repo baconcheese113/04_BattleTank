@@ -21,7 +21,7 @@ void ATankAIController::Tick(float DeltaSeconds) {
 	
 	// Move turret towards player
 	auto TankAimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
-	TankAimingComponent->AimAt(PlayerTank->GetActorLocation() + (FVector::UpVector * 200.f));
+	TankAimingComponent->AimAt(PlayerTank->GetActorLocation() + (FVector::UpVector * FMath::RandRange(0.f, 200.f)));
 	if (TankAimingComponent->GetFiringState() == EFiringState::Locked) {
 		TankAimingComponent->Fire();
 	}
